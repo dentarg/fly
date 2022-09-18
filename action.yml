@@ -19,7 +19,7 @@ runs:
 
     - name: Lookup app hostname
       shell: bash
-    - run: |
+      run: |
         echo "FLY_HOSTNAME=$(flyctl info --host)" >> $GITHUB_ENV
       env:
         FLY_API_TOKEN: "${{ inputs.fly-token }}"
@@ -41,7 +41,7 @@ runs:
 
     - name: Deploy to Fly
       shell: bash
-    - run: flyctl deploy --remote-only
+      run: flyctl deploy --remote-only
       env:
         FLY_API_TOKEN: "${{ inputs.fly-token }}"
 
