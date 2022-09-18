@@ -18,6 +18,7 @@ runs:
     - uses: superfly/flyctl-actions/setup-flyctl@master
 
     - name: Lookup app hostname
+      shell: bash
     - run: |
         echo "FLY_HOSTNAME=$(flyctl info --host)" >> $GITHUB_ENV
       env:
@@ -39,6 +40,7 @@ runs:
         echo "DEPLOYMENT_ID=$deploymentId" >> $GITHUB_ENV
 
     - name: Deploy to Fly
+      shell: bash
     - run: flyctl deploy --remote-only
       env:
         FLY_API_TOKEN: "${{ inputs.fly-token }}"

@@ -21,7 +21,7 @@ jobs:
     if: |
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.head_branch == github.event.repository.default_branch
-    concurrency: myapp
+    concurrency: deploy
     runs-on: ubuntu-latest
     steps:
       - uses: dentarg/fly@v1
