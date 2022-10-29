@@ -26,18 +26,22 @@ runs:
 
     - name: Create deployment in GitHub
       if: ${{ inputs.github-token }}
+      shell: bash
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
-      shell: bash
       run: |
-        deploymentId=$(gh api repos/${{ github.repository }}/deployments \
-          --method POST \
-          --header "Accept: application/vnd.github.v3+json" \
-          --field ref='${{ github.event.repository.default_branch }}' \
-          --field environment=$FLY_HOSTNAME \
-          --field description='Fly deploy from GitHub Actions' \
-          --jq '.id')
-        echo "DEPLOYMENT_ID=$deploymentId" >> $GITHUB_ENV
+        deploymentId=$(jq -n "{
+            \"ref\": \"${{ github.event.repository.default_branch }}\",\
+            \"environment\": \"$FLY_HOSTNAME\",\
+            \"description\": \"Fly deploy from GitHub Actions\",\
+            \"required_contexts\": []\
+          }" \
+          | gh api repos/${{ github.repository }}/deployments \
+            --method POST \
+            --header "Accept: application/vnd.github.v3+json" \
+            --input - \
+            --jq '.id')
+        echo 'DEPLOYMENT_ID='$deploymentId >> $GITHUB_ENV
 
     - name: Deploy to Fly
       shell: bash
