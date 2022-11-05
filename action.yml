@@ -24,6 +24,13 @@ runs:
       env:
         FLY_API_TOKEN: "${{ inputs.fly-token }}"
 
+    - name: Lookup app release version
+      shell: bash
+      run: |
+        echo "FLY_RELEASE_VERSION=$(fly releases --json | jq 'max_by(.Version).Version')" >> $GITHUB_ENV
+      env:
+        FLY_API_TOKEN: "${{ inputs.fly-token }}"
+
     - name: Create deployment in GitHub
       if: ${{ inputs.github-token }}
       shell: bash
@@ -45,7 +52,11 @@ runs:
 
     - name: Deploy to Fly
       shell: bash
-      run: flyctl deploy --remote-only
+      run: |
+        flyctl deploy --remote-only \
+          --env RELEASE_COMMIT=$(git rev-parse --verify HEAD) \
+          --env RELEASE_CREATED_AT=$(date --iso-8601=seconds) \
+          --env RELEASE_VERSION="v$(( $FLY_RELEASE_VERSION + 1 ))"
       env:
         FLY_API_TOKEN: "${{ inputs.fly-token }}"
 
