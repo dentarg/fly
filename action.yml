@@ -27,7 +27,7 @@ runs:
     - name: Lookup app release version
       shell: bash
       run: |
-        echo "FLY_RELEASE_VERSION=$(fly releases --json | jq 'max_by(.Version).Version')" >> $GITHUB_ENV
+        echo "FLY_RELEASE_VERSION=$(flyctl releases --json | jq 'max_by(.Version).Version')" >> $GITHUB_ENV
       env:
         FLY_API_TOKEN: "${{ inputs.fly-token }}"
 
