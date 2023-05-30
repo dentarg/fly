@@ -54,6 +54,7 @@ runs:
       shell: bash
       run: |
         flyctl deploy --remote-only \
+          --ha=false \
           --env RELEASE_COMMIT=$(git rev-parse --verify HEAD) \
           --env RELEASE_CREATED_AT=$(date --iso-8601=seconds) \
           --env RELEASE_VERSION="v$(( $FLY_RELEASE_VERSION + 1 ))"
