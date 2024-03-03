@@ -24,9 +24,12 @@ jobs:
     concurrency: deploy
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+      - run: |
+          echo "RUBY_VERSION=$(cat .ruby-version)" >> $GITHUB_ENV
       - uses: dentarg/fly@v1
         with:
-          build-args: "RUBY_VERSION=3.2.3"
+          build-args: "RUBY_VERSION=${{ env.RUBY_VERSION }}"
           fly-token: ${{ secrets.FLY_API_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 ```
