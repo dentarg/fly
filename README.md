@@ -26,6 +26,7 @@ jobs:
     steps:
       - uses: dentarg/fly@v1
         with:
+          build-args: "RUBY_VERSION=3.2.3"
           fly-token: ${{ secrets.FLY_API_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 ```
