@@ -4,6 +4,10 @@ branding:
   icon: "umbrella"
   color: "blue"
 inputs:
+  app:
+    description: "The app name"
+    default: ""
+    required: false
   build-args:
     description: "Build time variables in the form of NAME=VALUE pairs"
     default: ""
@@ -59,6 +63,7 @@ runs:
       run: |
         flyctl deploy --remote-only \
           --ha=false \
+          --app "${{ inputs.app }}" \
           --build-arg "${{ inputs.build-args }}" \
           --env RELEASE_COMMIT=$(git rev-parse --verify HEAD) \
           --env RELEASE_CREATED_AT=$(date --iso-8601=seconds) \
