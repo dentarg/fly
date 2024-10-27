@@ -16,6 +16,10 @@ on:
     workflows: [CI]
     types: [completed]
 
+permissions:
+  contents: read
+  deployments: write
+
 jobs:
   deploy:
     if: |
